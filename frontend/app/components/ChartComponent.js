@@ -1,29 +1,3 @@
-// "use client";
-// import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from "recharts";
-
-// export default function ChartComponent({ data }) {
-//   const formatted = data.map((d, i) => ({
-//     id: i + 1,
-//     Ping: d.ping,
-//     Download: d.download,
-//     Upload: d.upload,
-//   }));
-
-//   return (
-//     <ResponsiveContainer width="100%" height={400}>
-//       <LineChart data={formatted}>
-//         <XAxis dataKey="id" />
-//         <YAxis />
-//         <Tooltip />
-//         <Legend />
-//         <Line type="monotone" dataKey="Ping" stroke="#22d3ee" />
-//         <Line type="monotone" dataKey="Download" stroke="#4ade80" />
-//         <Line type="monotone" dataKey="Upload" stroke="#f97316" />
-//       </LineChart>
-//     </ResponsiveContainer>
-//   );
-// }
-
 "use client";
 import {
   LineChart,
