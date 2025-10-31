@@ -8,30 +8,40 @@ const ping = require("ping");
 
 const app = express();
 app.use(cors());
-app.use(express.json()); // ✅ <-- ADD THIS LINE
+app.use(express.json());
 connectDB();
 
-// Auto monitor every 10 seconds
+let currentActiveUrl = null;
+
+// Auto-monitor only the currently active URL every 10 seconds
 setInterval(async () => {
-  const sites = await MonitoredSite.find();
-  for (const site of sites) {
-    try {
-      const pingResult = await ping.promise.probe(site.url);
-      const data = {
-        url: site.url,
-        ping: parseFloat(pingResult.time),
-        download: (50 + Math.random() * 50).toFixed(2),
-        upload: (10 + Math.random() * 20).toFixed(2),
-        packetLoss: Math.random().toFixed(2),
-      };
-      const stat = new NetworkStat(data);
-      await stat.save();
-      console.log(`📡 Data stored for ${site.url}`);
-    } catch (e) {
-      console.error(`❌ Failed to monitor ${site.url}`);
-    }
+  if (!currentActiveUrl) return;
+
+  try {
+    const pingResult = await ping.promise.probe(currentActiveUrl);
+    const data = {
+      url: currentActiveUrl,
+      ping: parseFloat(pingResult.time),
+      download: (50 + Math.random() * 50).toFixed(2),
+      upload: (10 + Math.random() * 20).toFixed(2),
+      packetLoss: Math.random().toFixed(2),
+    };
+    const stat = new NetworkStat(data);
+    await stat.save();
+    console.log(`📡 Data stored for ${currentActiveUrl}`);
+  } catch (e) {
+    console.error(`❌ Failed to monitor ${currentActiveUrl}`);
   }
 }, 10000);
+
+// Route for activating a specific site
+app.post("/api/set-active", (req, res) => {
+  const { url } = req.body;
+  if (!url) return res.status(400).json({ error: "URL is required" });
+  currentActiveUrl = url;
+  console.log(`✅ Now monitoring: ${url}`);
+  res.json({ message: `Now monitoring: ${url}` });
+});
 
 app.use("/api", monitorRoutes);
 
