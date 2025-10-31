@@ -1,0 +1,58 @@
+# =========================
+# 📦 Node dependencies
+# =========================
+node_modules/
+frontend/node_modules/
+backend/node_modules/
+
+# =========================
+# ⚙️ Build outputs
+# =========================
+/frontend/.next/
+/frontend/out/
+/frontend/build/
+/backend/build/
+/backend/dist/
+
+# =========================
+# 🧪 Testing coverage
+# =========================
+/coverage
+
+# =========================
+# 🌍 Environment files
+# =========================
+.env
+.env.*
+frontend/.env
+backend/.env
+
+# =========================
+# 🗂 Logs and debug files
+# =========================
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# =========================
+# 🧰 Misc system files
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# 💡 TypeScript artifacts
+# =========================
+*.tsbuildinfo
+frontend/next-env.d.ts
+
+# =========================
+# ☁️ Vercel (optional)
+# =========================
+.vercel
+
+# =========================
+# 🔐 SSL / Certs
+# =========================
+*.pem
