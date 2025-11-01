@@ -43,7 +43,37 @@ app.post("/api/set-active", (req, res) => {
   res.json({ message: `Now monitoring: ${url}` });
 });
 
+// ✅ New route — stop monitoring the current site
+app.post("/api/stop-monitoring", (req, res) => {
+  currentActiveUrl = null;
+  console.log("🛑 Monitoring stopped.");
+  res.json({ message: "Monitoring stopped." });
+});
+
 app.use("/api", monitorRoutes);
 
 const PORT = 5000;
 app.listen(PORT, () => console.log(`✅ Backend running at http://localhost:${PORT}`));
+
+
+
+// Speed test proxy route
+app.get("/api/speed-test", async (req, res) => {
+  try {
+    const fileUrl = "https://speed.cloudflare.com/__down?bytes=2500000";
+    const start = Date.now();
+    const response = await fetch(fileUrl);
+    const buffer = await response.arrayBuffer();
+    const end = Date.now();
+
+    const duration = (end - start) / 1000;
+    const bitsLoaded = buffer.byteLength * 8;
+    const mbps = bitsLoaded / duration / 1024 / 1024;
+
+    res.json({ speed: mbps.toFixed(2) });
+  } catch (err) {
+    console.error("Speed test proxy error:", err.message);
+    res.status(500).json({ error: "Speed test failed" });
+  }
+});
+
