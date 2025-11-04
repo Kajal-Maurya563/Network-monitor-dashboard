@@ -48,20 +48,15 @@ export default function AddSiteForm({ onSelect }) {
         body: JSON.stringify({ url: cleaned }),
       });
 
-      // Set active url on backend so server pings only this one
-      await fetch("http://localhost:5000/api/set-active", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url: cleaned }),
-      });
-
+      // This prop is passed by the page to tell the backend
+      // to start monitoring
       onSelect(cleaned);
+      
       setUrl("");
       setOpen(false);
-      fetchSuggestions();
+      fetchSuggestions(); // Refresh list
     } catch (err) {
       console.error("Failed to start monitoring", err);
-      alert("Failed to start monitoring. Check backend.");
     }
   };
 
@@ -84,6 +79,7 @@ export default function AddSiteForm({ onSelect }) {
             }}
             onFocus={() => {
               setOpen(true);
+              fetchSuggestions(); // Refresh on focus
             }}
             className="flex-1 px-4 py-2 rounded-l-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
             aria-autocomplete="list"
@@ -105,7 +101,9 @@ export default function AddSiteForm({ onSelect }) {
             className="absolute left-0 right-0 mt-1 z-50 bg-white border border-gray-200 rounded-md shadow-lg overflow-y-auto"
             style={{ maxHeight: "14rem" }} // ~7 items depending on padding/line-height
           >
-            {suggestions.map((s, i) => (
+            {suggestions
+              .filter(s => s.toLowerCase().includes(url.toLowerCase()))
+              .map((s, i) => (
               <div
                 key={`${s}-${i}`}
                 role="option"

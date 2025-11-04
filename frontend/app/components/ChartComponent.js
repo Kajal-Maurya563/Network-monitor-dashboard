@@ -16,16 +16,20 @@ export default function ChartComponent({ data }) {
   const charts = [
     { key: "ping", color: "#00C49F", label: "Ping (ms)" },
     { key: "download", color: "#0088FE", label: "Download (Mbps)" },
-    { key: "upload", color: "#FFBB28", label: "Upload (Mbps)" },
+    // { key: "upload", color: "#FFBB28", label: "Upload (Mbps)" }, // Removed as server monitor doesn't test this
     { key: "packetLoss", color: "#FF4444", label: "Packet Loss (%)" },
   ];
 
   return (
-    <div className="flex flex-col gap-8">
+    // --- THIS IS THE CHANGE ---
+    // It's now a column by default, but a row on medium (md) screens and up
+    <div className="flex flex-col md:flex-row gap-8">
       {charts.map((chart) => (
         <div
           key={chart.key}
-          className="bg-gray-900 p-4 rounded-lg shadow-md border border-gray-700"
+          // --- THIS IS THE CHANGE ---
+          // It's full-width by default, but 1/3 width on medium screens
+          className="w-full md:w-1/3 bg-gray-900 p-4 rounded-lg shadow-md border border-gray-700"
         >
           <h3 className="text-xl font-semibold mb-3 text-center text-blue-400">
             {chart.label}
@@ -38,7 +42,8 @@ export default function ChartComponent({ data }) {
                 tickFormatter={(t) => new Date(t).toLocaleTimeString()}
                 stroke="#ccc"
               />
-              <YAxis stroke="#ccc" />
+      
+              <YAxis stroke="#ccc" domain={[0, 'auto']} />
               <Tooltip
                 contentStyle={{
                   backgroundColor: "#1f2937",

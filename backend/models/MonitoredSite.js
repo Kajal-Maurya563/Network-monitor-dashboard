@@ -6,4 +6,3 @@ const monitoredSiteSchema = new mongoose.Schema({
 });
 
 module.exports = mongoose.model("MonitoredSite", monitoredSiteSchema);
-

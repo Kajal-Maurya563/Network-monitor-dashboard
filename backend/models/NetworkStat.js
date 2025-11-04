@@ -11,18 +11,3 @@ const networkStatSchema = new mongoose.Schema({
 });
 
 module.exports = mongoose.model("NetworkStat", networkStatSchema);
-
-
-// const mongoose = require("mongoose");
-
-// const NetworkStatSchema = new mongoose.Schema({
-//   ping: Number,
-//   download: Number,
-//   upload: Number,
-//   packetLoss: Number,
-//   timestamp: { type: Date, default: Date.now },
-// });
-
-// module.exports = mongoose.model("NetworkStat", NetworkStatSchema);
-
-
